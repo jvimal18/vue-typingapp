@@ -2,25 +2,35 @@
     <div class="tool-bar" id="toolbar">
 
         <div class="start-button" v-if="! isGameStarted" @click="StartGame">
-            <button>START</button>
+            START
         </div>
 
         <div class="action-bar" v-else>
-            <div class="reset"><button @click="resetGame">Reset</button></div>
-            <div class="skip"><button @click="skipQuote">Skip</button></div>
-            <div class="end"><button @click="endGame">End</button></div>
-            <div class="score">SCORE : {{ score }}</div>
+            <div button class="reset" @click="resetGame">Reset</div>
+            <div button class="skip" @click="skipQuote">Skip</div>
+            <div button class="end" @click="endGame">End</div>
+            <div select class="level-select">
+                <select v-if="level" v-model="level">
+                    <option disabled value="">select Levet</option>
+                    <option value="1" default>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
         </div>
 
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
     name: 'toolbar',
     computed: {
+        ...mapGetters(['getlevel']),
         isGameStarted: {
             get () {
                 return this.$store.state.Quotes.startGame
@@ -29,17 +39,21 @@ export default {
                 this.$store.commit('setStartGame', value)
             },
         },
-        score: {
-            get () {
-                return this.$store.state.Quotes.score
+        level: {
+            get() {
+                return this.getlevel
             },
             set(value) {
-                this.$store.commit('setScore', value)
+                this.setlevel(value)
             }
-        },
+        }
+    },
+    mounter() {
+        
     },
     methods: {
         ...mapActions(['fetchQuote', 'resetGame', 'resetTimer', 'endGame']),
+        ...mapMutations(['setlevel']),
         StartGame() {
             this.isGameStarted = true
             let time = new Date() 
@@ -54,12 +68,18 @@ export default {
 </script>
 
 <style scoped>
+.tool-bar{
+    margin: 2rem auto;
+    width: 700px;
+    max-width: 90%;
+}
 .action-bar {
     margin: auto 0;
     text-align: center
 }
 
-.start-button > button {
+.start-button {
+  margin-bottom: 2rem;
   border: 1px solid #0288D1;
   background-color:#90CAF9;
   font-size: 1.2rem;
@@ -68,63 +88,57 @@ export default {
   border-radius: 15px;
 }
 
-.start-button {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-
-.start-button > button:hover {
+.start-button:hover {
   background-color: #0288D1;
   color: #ffffff;
 }
 
-.action-bar button {
+.action-bar div[button] {
     margin-right: 1rem;
     border-radius: .2rem;
     outline: none;
     width: 5rem;
-    height: 2rem
+    height: 2rem;
+    padding: 0.5rem 2rem;
 }
 
-.reset, .score, .skip, .end {
+.action-bar div[select] > select {
+    height: 2.5rem;
+    padding: 0.5rem;
+}
+
+.reset, .skip, .end, .level-select {
     display: inline;
 }
 
-.skip > button {
+.skip {
     border: 1px solid #9A7D0A;
     background-color:#F7DC6F;
 }
 
-.skip > button:hover {
+.skip:hover {
     background-color: #9A7D0A;
     color: #ffffff;
 }
 
-
-
-.reset > button {
+.reset{
     border: 1px solid #0288D1;
     background-color:#90CAF9;
 }
 
-.reset > button:hover {
+.reset:hover {
     background-color: #0288D1;
     color: #ffffff;
 }
 
-.end > button {
+.end {
     border: 1px solid #CB4335;
     background-color:#EC7063;
 }
 
-.end > button:hover {
+.end:hover {
     background-color: #CB4335;
     color: #ffffff;
-}
-
-.tool-bar {
-    margin-bottom: 2rem;
 }
 
 </style>

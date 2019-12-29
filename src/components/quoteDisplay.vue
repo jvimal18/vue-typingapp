@@ -1,8 +1,10 @@
 <template>
     <div class="container">
-        <div class="auther-name" id="authorName">
-            Author: {{ author }} 
-            <span class="word-count">{{ getQuoteLength }}</span>
+        <div class="header">
+            <div class="auther-name" id="authorName">
+                Author: {{ author }} 
+                <span class="word-count"><span>Word Count : </span>{{ getQuoteLength }}</span>
+            </div>
         </div>
         <div id="quoteDisplay" class="quote-display"> 
             <span v-for="(letter, idx) in currentQuote" :key=idx :id="idx">{{ letter }}</span>
@@ -45,14 +47,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 .container {
   display: relative;
   padding: 1rem;
   border-radius: .5rem;
-  width: 700px;
-  max-width: 90%;
   background-color:#90CAF9;
   border: 1px solid #0288D1;
   margin: 0 auto;
@@ -60,6 +59,10 @@ export default {
 
 .word-count {
     float: right;
+}
+
+.word-count > span {
+    font-weight: normal;
 }
 
 .quote-display, .auther-name{
@@ -71,10 +74,6 @@ export default {
 .auther-name {
     text-transform: uppercase;
     font-weight: bold;
-}
-
-.quote-display, .quote-input {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .valid {

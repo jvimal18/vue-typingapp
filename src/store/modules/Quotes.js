@@ -7,11 +7,15 @@ const state = {
         quote: "",
         permalink: "",
       },
+    lifePoint: 20,
     quoteLength: 0,
     startGame: false,
     score: 0,
     startTime: new Date(),
-    quoteHtmlElement: HTMLElement
+    quoteHtmlElement: HTMLElement,
+    level: 1,
+    wrongTypeCount: 0,
+    correctTypeCount: 0
 }
 
 const getters = {
@@ -19,7 +23,11 @@ const getters = {
   getQuoteLength: (state) => state.quoteLength,
   getcurrentQuote: (state) => state.currentQuoteRes.quote,
   getQuoteHtmlElement: (state) => state.quoteHtmlElement,
-  getscore: (state) => state.score,
+  getScore: (state) => state.score,
+  getlevel: (state) => state.level,
+  getCorrectTypeCount: (state) => state.correctTypeCount,
+  getWrongTypeCount: (state) => state.wrongTypeCount,
+  getLifePoint: (state) => state.lifePoint
 }
 
 const actions = {
@@ -59,6 +67,10 @@ const mutations = {
   setStartTime: (state, data) => { state.startTime = data },
   setQuoteLength: (state, length) => { state.quoteLength = length },
   setQuoteHTMLElement: (state, element) => { state.quoteHtmlElement = element },
+  setlevel: (state, level) => {state.level = level},
+  setWrongTypeCount: (state, value) => {state.wrongTypeCount = value},
+  setCorrectTypeCount: (state, value) => {state.correctTypeCount = value },
+  setLifePoint: (state, value) => { state.lifePoint = value}
 }
 
 

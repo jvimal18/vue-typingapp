@@ -1,9 +1,9 @@
 <template>
-    <textarea v-model="inputData" class="quote-input" @input="validateInput"></textarea>
+    <textarea v-model="inputData" class="quote-input" @keyup="validatekeypress" @input="validateInput"></textarea>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'inputArea',
@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getcurrentQuote', 'getQuoteHtmlElement', 'getscore'])
+    ...mapGetters(['getcurrentQuote', 'getQuoteHtmlElement', 'getScore', 'getCorrectTypeCount', 'getWrongTypeCount'])
   },
   watch: {
     getcurrentQuote() {
@@ -23,6 +23,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchQuote', 'resetTimer']),
+    ...mapMutations(['setWrongTypeCount', 'setCorrectTypeCount']),
     resetSpanClass() {
       if ( this.inputData.length === 0 ) {
         const arrayQuote = this.getQuoteHtmlElement.querySelectorAll('span')
@@ -36,6 +37,14 @@ export default {
     nextQuote() {
       this.fetchQuote()
       this.resetTimer()
+    },
+    validatekeypress() {
+      let len = this.inputData.length
+      if (this.getcurrentQuote[len-1] === this.inputData[len-1]) {
+        this.setCorrectTypeCount(this.getCorrectTypeCount + 1)
+      } else {
+        this.setWrongTypeCount(this.getWrongTypeCount + 1)
+      }
     },
     validateInput() {
       this.resetSpanClass()
@@ -57,7 +66,7 @@ export default {
       })
 
       if ( this.inputData === this.getcurrentQuote) {
-        this.$store.commit('setScore', this.getscore+1)
+        this.$store.commit('setScore', this.getScore+1)
         this.nextQuote()
       }
 
@@ -66,7 +75,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .quote-input {
   background-color: transparent;
   border: 1px solid #0288D1;
@@ -78,5 +87,9 @@ export default {
   padding: .5rem 1rem;
   font-size: 1rem;
   border-radius: .5rem;
+}
+
+textarea {
+  font-family: 'Roboto Condensed', sans-serif;
 }
 </style>
