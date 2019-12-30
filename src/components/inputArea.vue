@@ -40,6 +40,10 @@ export default {
     },
     validatekeypress() {
       let len = this.inputData.length
+
+      if ( this.getcurrentQuote.charCodeAt([len-1]) == 8217 && this.inputData[len-1] == "'") {
+        this.inputData = this.inputData.substring(0, len-1) + String.fromCharCode(8217)
+      }
       if (this.getcurrentQuote[len-1] === this.inputData[len-1]) {
         this.setCorrectTypeCount(this.getCorrectTypeCount + 1)
       } else {

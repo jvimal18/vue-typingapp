@@ -11,12 +11,13 @@
         <timer v-if="getGameLive"></timer>
         <quoteDisplay v-if="getGameLive"></quoteDisplay>
         <toolbar></toolbar>
+        <div v-if="showReport">
+          <report></report>
+        </div>
       </div>
       <div class="column right"><rules v-if="getGameLive" ></rules></div>
     </div>
 
-    <!-- Mixin for common validations -->
-    <!-- <validateGameEnd/> -->
   </div>
 </template>
 
@@ -27,7 +28,7 @@ import quoteDisplay from './components/quoteDisplay.vue'
 import timer from './components/timer.vue'
 import noticeBoard from './components/noticeBoard.vue'
 import rules from './components/rules'
-// import validateGameEnd from './mixins/validateGameEnd'
+import report from './components/report'
 
 export default {
   name: 'app',
@@ -37,10 +38,17 @@ export default {
     toolbar,
     noticeBoard,
     rules,
-    // validateGameEnd
+    report
   },
   computed: {
-    ...mapGetters(['getGameLive']),
+    ...mapGetters(['getGameLive', 'getCorrectTypeCount']),
+    showReport() {
+      if ( ! this.getGameLive && this.getCorrectTypeCount > 0) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapActions(['fetchQuote']),

@@ -2,7 +2,6 @@ const RANDOM_QUOTE_API_URL = 'http://quotes.stormconsultancy.co.uk/random.json'
 
 const state = {
     gameLive: false,
-    startTime: new Date(),
     level: 1,
     lifePoint: 20,
     score: 0,
@@ -20,6 +19,7 @@ const state = {
     // Validating Keyup
     wrongTypeCount: 0,
     correctTypeCount: 0,
+    showReport: false
 }
 
 const getters = {
@@ -32,7 +32,8 @@ const getters = {
   getlevel: (state) => state.level,
   getCorrectTypeCount: (state) => state.correctTypeCount,
   getWrongTypeCount: (state) => state.wrongTypeCount,
-  getLifePoint: (state) => state.lifePoint
+  getLifePoint: (state) => state.lifePoint,
+  getshowReport: (state) => state.showReport,
 }
 
 const actions = {
@@ -49,17 +50,14 @@ const actions = {
           }
       })
   },
-  resetTimer({commit}) {
-    commit('setStartTime', new Date())
-  },  
   resetGame({ commit, dispatch }, flag=true) {
     if (flag) { dispatch('fetchQuote') }
+    commit('setWrongTypeCount', 0)
+    commit('setCorrectTypeCount', 0)
     commit('setScore', 0)
-    commit('setStartTime', new Date())
+    commit('setLifePoint', 20)
   },
-  endGame({commit, dispatch}) {
-    // dispatch('resetGame', false)
-    dispatch('resetGame')
+  endGame({commit}) {
     commit('setGameLive', false)
   },
   resetAllDefaults({commit, dispatch}) {
@@ -70,7 +68,7 @@ const actions = {
     commit('setWrongTypeCount', 0)
     commit('setCorrectTypeCount', 0)
     commit('setLifePoint', 20)
-  }
+  },
 }
 
 const mutations = {
@@ -83,7 +81,9 @@ const mutations = {
   setlevel: (state, level) => {state.level = level},
   setWrongTypeCount: (state, value) => {state.wrongTypeCount = value},
   setCorrectTypeCount: (state, value) => {state.correctTypeCount = value },
-  setLifePoint: (state, value) => { state.lifePoint = value}
+  setLifePoint: (state, value) => { state.lifePoint = value},
+  saveQuoteState: (state) => { localStorage.setItem('store', JSON.stringify(state)) },
+  setShowReport: (state, bool) => {state.showReport= bool}
 }
 
 

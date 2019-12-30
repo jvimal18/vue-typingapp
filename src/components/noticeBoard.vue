@@ -8,7 +8,7 @@
       <div class="word-counter" id="wordCounter">
         <!-- <div class="sub-section">Word Count</div> -->
         <div class="correct"><span>Typed Like A Charm : </span><span class="green">{{getCorrectTypeCount}}</span></div>
-        <div class="mistakes"><span>Worngly Typed : </span><span class="red">{{getWrongTypeCount}}</span></div>
+        <div class="mistakes"><span>Wrongly Typed : </span><span class="red">{{getWrongTypeCount}}</span></div>
       </div>
   </div>
 </template>

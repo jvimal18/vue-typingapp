@@ -9,6 +9,7 @@
             <div button class="reset" @click="resetGame">Reset</div>
             <div button class="skip" @click="skipQuote">Skip</div>
             <div button class="end" @click="endGame">End</div>
+            <div button class="save" @click="saveQuoteState()">Save</div>
             <div select class="level-select">
                 <select v-if="level" v-model="level">
                     <option disabled value="">select Levet</option>
@@ -43,18 +44,16 @@ export default {
         
     },
     methods: {
-        ...mapActions(['fetchQuote', 'resetGame', 'resetTimer', 'endGame']),
-        ...mapMutations(['setlevel', 'setLifePoint', 'setGameLive']),
+        ...mapActions(['fetchQuote', 'resetGame', 'endGame']),
+        ...mapMutations(['setlevel', 'setLifePoint', 'setGameLive', 'saveQuoteState']),
         startGame() {
+            this.resetGame(false)
             this.setGameLive(true)
-            let time = new Date() 
-            this.startTime = time.setSeconds(time.getSeconds() + 2)
         },
         skipQuote() {
             this.fetchQuote()
-            this.resetTimer()
             this.setLifePoint(this.getLifePoint - 1)
-        }
+        },
     }
 }
 </script>
@@ -101,7 +100,7 @@ export default {
     padding: 0.5rem;
 }
 
-.reset, .skip, .end, .level-select {
+.reset, .skip, .end, .save, .level-select {
     display: inline;
 }
 
@@ -112,6 +111,16 @@ export default {
 
 .skip:hover {
     background-color: #9A7D0A;
+    color: #ffffff;
+}
+
+.save {
+    background-color: rgb(2, 209, 106);
+    border: 1px solid rgb(2, 117, 59);
+}
+
+.save:hover {
+    background-color: rgb(2, 117, 59);
     color: #ffffff;
 }
 

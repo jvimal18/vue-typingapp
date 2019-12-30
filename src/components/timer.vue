@@ -14,44 +14,40 @@ export default {
             counter: null,
             danger: false,
             toggle: true,
-            prevCounter: undefined
         }
     },
     computed: {
-        ...mapGetters(['getQuoteLength', 'getlevel']),
+        ...mapGetters(['getQuoteLength', 'getlevel', 'getGameLive']),
         createdTime() {
             return this.$store.state.Quotes.startTime
         },
-        deadline() {
-            let time = this.createdTime
-            let timelimit = Math.floor( this.getQuoteLength / parseInt(this.getlevel) )
-            return new Date(time.setSeconds(time.getSeconds() + timelimit))
-        }
     },
     watch: {
         getQuoteLength() {
-            this.prevCounter = undefined
+            this.updateTimer()
         }
     },
     methods: {
-        ...mapActions(['resetGame'])
+        ...mapActions(['resetGame']),
+        updateTimer() {
+            this.counter = Math.floor( this.getQuoteLength / parseInt(this.getlevel) )
+        }
     },
     mounted() {
+        this.updateTimer()
         this.interval = setInterval(() => {
-            this.counter = Math.floor((this.deadline - new Date()) / 1000)
-            if (this.counter > this.prevCounter && this.prevCounter) {
-                this.counter = this.prevCounter-1
-            }
-            this.prevCounter = this.counter
-            this.toggle = !this.toggle
-            if (this.counter > 10){
-                this.danger = false
-            } else if ( this.counter >= 1 && this.counter <= 10){
-                console.log('corrupt')
-                this.danger = true
-            } else if ( this.counter <= 0) {
-                // alert("Nice Try, Time Over!!!")
-                this.resetGame()
+            console.log(this.counter)
+            if ( this.counter !== null) { 
+                this.counter = this.counter-1
+                this.prevCounter = this.counter
+                this.toggle = !this.toggle
+                if (this.counter > 10){
+                    this.danger = false
+                } else if ( this.counter >= 1 && this.counter <= 10){
+                    this.danger = true
+                } else if ( this.counter <= 0 ) {
+                    this.resetGame()
+                }
             }
         }, 1000);
     },
