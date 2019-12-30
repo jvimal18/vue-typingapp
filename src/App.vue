@@ -6,24 +6,28 @@
     </header>
 
     <div class=row>
-      <div class="column left"><noticeBoard v-if="isGameStarted"></noticeBoard></div>
+      <div class="column left"><noticeBoard v-if="getGameLive"></noticeBoard></div>
       <div class="column middle">
-        <timer v-if="isGameStarted"></timer>
-        <quoteDisplay v-if="isGameStarted"></quoteDisplay>
+        <timer v-if="getGameLive"></timer>
+        <quoteDisplay v-if="getGameLive"></quoteDisplay>
         <toolbar></toolbar>
       </div>
-      <div class="column right"><rules></rules></div>
+      <div class="column right"><rules v-if="getGameLive" ></rules></div>
     </div>
+
+    <!-- Mixin for common validations -->
+    <!-- <validateGameEnd/> -->
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import toolbar from './components/toolkit.vue'
 import quoteDisplay from './components/quoteDisplay.vue'
 import timer from './components/timer.vue'
 import noticeBoard from './components/noticeBoard.vue'
 import rules from './components/rules'
+// import validateGameEnd from './mixins/validateGameEnd'
 
 export default {
   name: 'app',
@@ -32,17 +36,11 @@ export default {
     timer,
     toolbar,
     noticeBoard,
-    rules
+    rules,
+    // validateGameEnd
   },
   computed: {
-    isGameStarted: {
-      get () {
-          return this.$store.state.Quotes.startGame
-      },
-      set(value) {
-          this.$store.commit('setStartGame', value)
-      }
-    }
+    ...mapGetters(['getGameLive']),
   },
   methods: {
     ...mapActions(['fetchQuote']),
@@ -106,6 +104,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
+  user-select: none;
 }
 
 .title-highlight {

@@ -1,8 +1,10 @@
 <template>
   <div class="notice-board" id="noticeBoard">
       <div class="header"> SCORE Card </div>
-      <div class="score"><span>SCORE : </span>{{ getScore }}</div>
-      <div class="life"><span>Life Points : </span><span class="green">{{ getLifePoint }}</span></div>
+      <div class="sub-section">
+        <div class="score"><span>SCORE : </span>{{ getScore }}</div>
+        <div class="life"><span>Life Points : </span><span class="green">{{ getLifePoint }}</span></div>
+      </div>
       <div class="word-counter" id="wordCounter">
         <!-- <div class="sub-section">Word Count</div> -->
         <div class="correct"><span>Typed Like A Charm : </span><span class="green">{{getCorrectTypeCount}}</span></div>
@@ -58,11 +60,20 @@ export default {
     padding: 20px;
 }
 
-.score {
-    margin-top: 10px;
-    font-weight: bold;
-    opacity: unset;
+.sub-section {
+    padding: 20px 0;
+    text-align: center;
     border-bottom: .5px solid black;
+}
+
+.score, .life {
+    display: inline;
+    font-weight: bold;
+}
+
+.life {
+    font-weight: bold;
+    margin-left: 2rem;
 }
 
 .word-counter {

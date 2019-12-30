@@ -1,7 +1,7 @@
 <template>
     <div class="tool-bar" id="toolbar">
 
-        <div class="start-button" v-if="! isGameStarted" @click="StartGame">
+        <div class="start-button" v-if="! getGameLive" @click="startGame">
             START
         </div>
 
@@ -20,7 +20,6 @@
                 </select>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -30,15 +29,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
     name: 'toolbar',
     computed: {
-        ...mapGetters(['getlevel']),
-        isGameStarted: {
-            get () {
-                return this.$store.state.Quotes.startGame
-            },
-            set(value) {
-                this.$store.commit('setStartGame', value)
-            },
-        },
+        ...mapGetters(['getlevel', 'getLifePoint', 'getGameLive']),
         level: {
             get() {
                 return this.getlevel
@@ -53,15 +44,16 @@ export default {
     },
     methods: {
         ...mapActions(['fetchQuote', 'resetGame', 'resetTimer', 'endGame']),
-        ...mapMutations(['setlevel']),
-        StartGame() {
-            this.isGameStarted = true
+        ...mapMutations(['setlevel', 'setLifePoint', 'setGameLive']),
+        startGame() {
+            this.setGameLive(true)
             let time = new Date() 
             this.startTime = time.setSeconds(time.getSeconds() + 2)
         },
         skipQuote() {
             this.fetchQuote()
             this.resetTimer()
+            this.setLifePoint(this.getLifePoint - 1)
         }
     }
 }
@@ -79,13 +71,15 @@ export default {
 }
 
 .start-button {
-  margin-bottom: 2rem;
-  border: 1px solid #0288D1;
-  background-color:#90CAF9;
-  font-size: 1.2rem;
-  padding: 1rem;
-  width: 10rem;
-  border-radius: 15px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    border: 1px solid #0288D1;
+    background-color:#90CAF9;
+    font-size: 1.2rem;
+    padding: 1rem;
+    width: 10rem;
+    border-radius: 15px;
 }
 
 .start-button:hover {

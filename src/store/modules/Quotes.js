@@ -1,29 +1,34 @@
 const RANDOM_QUOTE_API_URL = 'http://quotes.stormconsultancy.co.uk/random.json'
 
 const state = {
+    gameLive: false,
+    startTime: new Date(),
+    level: 1,
+    lifePoint: 20,
+    score: 0,
+
+    // Quote Data
     currentQuoteRes: {
         author: "",
         id: 0,
         quote: "",
         permalink: "",
       },
-    lifePoint: 20,
     quoteLength: 0,
-    startGame: false,
-    score: 0,
-    startTime: new Date(),
     quoteHtmlElement: HTMLElement,
-    level: 1,
+
+    // Validating Keyup
     wrongTypeCount: 0,
-    correctTypeCount: 0
+    correctTypeCount: 0,
 }
 
 const getters = {
+  getGameLive: (state) => state.gameLive,
+  getScore: (state) => state.score,
   currentQuoteRes: (state) => state.currentQuoteRes,
   getQuoteLength: (state) => state.quoteLength,
   getcurrentQuote: (state) => state.currentQuoteRes.quote,
   getQuoteHtmlElement: (state) => state.quoteHtmlElement,
-  getScore: (state) => state.score,
   getlevel: (state) => state.level,
   getCorrectTypeCount: (state) => state.correctTypeCount,
   getWrongTypeCount: (state) => state.wrongTypeCount,
@@ -47,7 +52,6 @@ const actions = {
   resetTimer({commit}) {
     commit('setStartTime', new Date())
   },  
-
   resetGame({ commit, dispatch }, flag=true) {
     if (flag) { dispatch('fetchQuote') }
     commit('setScore', 0)
@@ -56,13 +60,22 @@ const actions = {
   endGame({commit, dispatch}) {
     // dispatch('resetGame', false)
     dispatch('resetGame')
-    commit('setStartGame', false)
+    commit('setGameLive', false)
+  },
+  resetAllDefaults({commit, dispatch}) {
+    dispatch('fetchQuote')
+    commit('setScore', 0)
+    commit('setStartTime', new Date)
+    commit('setlevel', 1)
+    commit('setWrongTypeCount', 0)
+    commit('setCorrectTypeCount', 0)
+    commit('setLifePoint', 20)
   }
 }
 
 const mutations = {
+  setGameLive: (state, bool) => {state.gameLive = bool},
   setcurrentQuoteRes: (state, data) => { state.currentQuoteRes = data },
-  setStartGame: (state, data) => { state.startGame = data },
   setScore: (state, data) => { state.score = data },
   setStartTime: (state, data) => { state.startTime = data },
   setQuoteLength: (state, length) => { state.quoteLength = length },
