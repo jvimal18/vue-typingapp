@@ -11,12 +11,6 @@ export const mymixin = {
                 this.resetAllDefaults()
             }
         },
-        getWrongTypeCount() {
-            if ( this.getWrongTypeCount >= 50 ){
-                this.setGameLive(false)
-                this.resetAllDefaults()
-            }
-        }
     },
     methods: {
         ...mapMutations(['setGameLive', 'setLifePoint', 'setWrongTypeCount']),

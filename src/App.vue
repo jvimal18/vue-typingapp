@@ -17,7 +17,7 @@
       </div>
       <div class="column right"><rules v-if="getGameLive" ></rules></div>
     </div>
-
+    <div v-awesome="{correctPercent: '30%', incorrectPercent: '70%'}"></div>
   </div>
 </template>
 
@@ -32,6 +32,11 @@ import report from './components/report'
 
 export default {
   name: 'app',
+  data() {
+    return {
+      val: "Test"
+      }
+  },
   components: {
     quoteDisplay,
     timer,
@@ -93,6 +98,7 @@ export default {
 #app {
   margin: 1rem 1rem;
   min-height: 95vh;
+  overflow-y: auto;
 }
 
 header {
